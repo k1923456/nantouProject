@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/k1923456/nantouProject#readme",
   "dependencies": {
+    "@nomiclabs/hardhat-truffle5": "^2.0.2",
+    "@nomiclabs/hardhat-web3": "^2.0.0",
+    "@openzeppelin/test-helpers": "^0.5.15",
     "hardhat": "^2.6.8"
   },
   "devDependencies": {

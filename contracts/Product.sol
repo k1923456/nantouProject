@@ -75,7 +75,7 @@ contract Product is IDecreasable {
         _;
     }
 
-    modifier onlyDest(address _item) {
+    modifier requireDest(address _item) {
         require(destination[_item] == true, "Item: Item is not in destination");
         _;
     }
@@ -132,7 +132,7 @@ contract Product is IDecreasable {
 
     function decrease(uint256 _number)
         public
-        onlyDest(msg.sender)
+        requireDest(msg.sender)
         enoughQuantity(_number)
     {
         quantity.restNumber -= _number;
@@ -157,7 +157,6 @@ contract Product is IDecreasable {
         for (uint256 i = 0; i < _dests.length; i++) {
             destinationList.push(_dests[i]);
             destination[_dests[i].usedItem] = true;
-            decrease(_dests[i].usedNumber);
         }
     }
 }
