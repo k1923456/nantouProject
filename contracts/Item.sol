@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 
-contract Product {
+contract Item {
     uint256 public shid;
     uint256 public organizationID;
     uint256 public producedDate;
@@ -37,12 +37,12 @@ contract Product {
     }
 
     modifier notExpired(uint256 timestamp) {
-        require(timestamp <= expirationDate, "Product has been expired.");
+        require(timestamp <= expirationDate, "Item has been expired.");
         _;
     }
 
     modifier enoughQuantity(uint256 number) {
-        require(number <= quantity.number, "Product number is not enough.");
+        require(number <= quantity.number, "Item number is not enough.");
         _;
     }
 
