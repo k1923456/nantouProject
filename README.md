@@ -1,3 +1,6 @@
+# 重要合約邏輯
+1. 若要成功把自己的sourceList加入，必須先把自己加入其他 Item 的 destination, 其它Item才能被扣除數量
+
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
