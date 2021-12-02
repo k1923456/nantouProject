@@ -16,7 +16,7 @@ contract("MSStaking", async (accounts) => {
 
   describe("Item Test", function () {
     it("Test decrease", async function () {
-      const Item1Data = {
+      const item1Data = {
         shid: 1234,
         organizationID: 1,
         producedDate: 1637857385,
@@ -25,27 +25,33 @@ contract("MSStaking", async (accounts) => {
         name: "茶葉",
         organizationName: "8D Tea",
       };
-      const number = 1500;
-      const packnumber = 5;
-      const unit = "ML";
-      const item1 = await Item.new(Item1Data, number, packnumber, unit, {
+      const item1Quantity = {
+        restNumber: 1500,
+        maxNumber: 1500,
+        maxPackNumber: 5,
+        unit: "ML",
+      }
+      const item1 = await Item.new(item1Data, item1Quantity, {
         from: organization,
       });
       console.log(`Item1 address is ${item1.address}`)
 
-      const Item2Data = {
+      const item2Data = {
         shid: 1235,
         organizationID: 1,
         producedDate: 1637857385,
         expirationDate: 2637857385,
         organization: organization,
         name: "茶葉",
-        organizationName: "8D Tea",
+        organizationName: "8D Tea22",
       };
-      const number2 = 1500;
-      const packnumber2 = 5;
-      const unit2 = "ML";
-      const item2 = await Item.new(Item2Data, number2, packnumber2, unit2, {
+      const item2Quantity = {
+        restNumber: 900,
+        maxNumber: 900,
+        maxPackNumber: 3,
+        unit: "ML",
+      }
+      const item2 = await Item.new(item2Data, item2Quantity, {
         from: organization,
       });
       console.log(`Item2 address is ${item2.address}`)
@@ -69,6 +75,8 @@ contract("MSStaking", async (accounts) => {
         },
       ];
       await item2.addSources(item2Sources);
+      const item1QuantityAfter = await item1.quantity();
+      expect(item1QuantityAfter.restNumber).to.bignumber.equal(new BN(1450))
     });
   });
 });

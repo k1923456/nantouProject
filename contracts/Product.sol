@@ -82,22 +82,17 @@ contract Product is IDecreasable {
 
     constructor(
         ProductData memory _productData,
-        uint256 _maxNumber,
-        uint256 _maxPackNumber,
-        string memory _unit
+        Quantity memory _quantity
     ) {
         productData = _productData;
-        quantity.restNumber = _maxNumber;
-        quantity.maxNumber = _maxNumber;
-        quantity.unit = _unit;
-        quantity.maxPackNumber = _maxPackNumber;
+        quantity = _quantity;
 
         emit ProductCreated(
             _productData.phid,
             _productData.organizationID,
             _productData.ownerID,
-            _maxNumber,
-            _maxPackNumber,
+            _quantity.maxNumber,
+            _quantity.maxPackNumber,
             _productData.transactionDate,
             _productData.expirationDate,
             _productData.organization,
@@ -107,22 +102,17 @@ contract Product is IDecreasable {
 
     function modify(
         ProductData memory _productData,
-        uint256 _maxNumber,
-        uint256 _maxPackNumber,
-        string memory _unit
+        Quantity memory _quantity
     ) public onlyOrganization {
         productData = _productData;
-        quantity.restNumber = _maxNumber;
-        quantity.maxNumber = _maxNumber;
-        quantity.unit = _unit;
-        quantity.maxPackNumber = _maxPackNumber;
+        quantity = _quantity;
 
         emit ProductCreated(
             _productData.phid,
             _productData.organizationID,
             _productData.ownerID,
-            _maxNumber,
-            _maxPackNumber,
+            _quantity.maxNumber,
+            _quantity.maxPackNumber,
             _productData.transactionDate,
             _productData.expirationDate,
             _productData.organization,
