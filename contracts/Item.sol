@@ -150,7 +150,7 @@ contract Item is IDecreasable {
         }
     }
 
-    function addProcedure(procedureMetadata memory _procedureData)
+    function addProcedure(ProcedureMetadata memory _procedureData)
         public
         notExpired
     {
