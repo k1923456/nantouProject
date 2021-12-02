@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 
-import "./IDecreasable.sol";
+import "./TraceableObject.sol";
 
-contract Item is IDecreasable {
-    Quantity public quantity;
-
+contract Item is TraceableObject {
     struct ItemData {
         uint256 shid;
         uint256 organizationID;
@@ -17,7 +15,7 @@ contract Item is IDecreasable {
     }
     ItemData public itemData;
 
-    struct ProcedureMetadata {
+    struct ProcedureData {
         string name;
         string[] mediaList;
         string[] sensorList;
@@ -25,17 +23,7 @@ contract Item is IDecreasable {
         uint256 endTime;
     }
     address[] public procedureList;
-    mapping(address => ProcedureMetadata) private procedureData;
-
-    struct UsedItemData {
-        uint256 shid;
-        uint256 phid;
-        address usedItem;
-        uint256 usedNumber;
-    }
-    UsedItemData[] public sourceList;
-    UsedItemData[] public destinationList;
-    mapping(address => bool) public destination;
+    mapping(address => ProcedureData) private procedureData;
 
     event ItemCreated(
         uint256 indexed shid,
@@ -73,16 +61,6 @@ contract Item is IDecreasable {
         _;
     }
 
-    modifier enoughQuantity(uint256 _number) {
-        require(_number <= quantity.restNumber, "Item: quantity is not enough");
-        _;
-    }
-
-    modifier requireDest(address _item) {
-        require(destination[_item] == true, "Item: Item is not in destination");
-        _;
-    }
-
     constructor(ItemData memory _itemData, Quantity memory _quantity) {
         itemData = _itemData;
         quantity = _quantity;
@@ -116,37 +94,27 @@ contract Item is IDecreasable {
         );
     }
 
-    function decrease(uint256 _number)
+    function addSources(TraceData[] memory _sources)
         public
-        requireDest(msg.sender)
-        enoughQuantity(_number)
-    {
-        quantity.restNumber -= _number;
-    }
-
-    function addSources(UsedItemData[] memory _sources)
-        public
+        virtual
+        override
         onlyOrganization
         notExpired
     {
-        for (uint256 i = 0; i < _sources.length; i++) {
-            sourceList.push(_sources[i]);
-            IDecreasable(_sources[i].usedItem).decrease(_sources[i].usedNumber);
-        }
+        super.addSources(_sources);
     }
 
-    function addDests(UsedItemData[] memory _dests)
+    function addDests(TraceData[] memory _dests)
         public
+        virtual
+        override
         onlyOrganization
         notExpired
     {
-        for (uint256 i = 0; i < _dests.length; i++) {
-            destinationList.push(_dests[i]);
-            destination[_dests[i].usedItem] = true;
-        }
+        super.addDests(_dests);
     }
 
-    function addProcedure(ProcedureMetadata memory _procedureData)
+    function addProcedure(ProcedureData memory _procedureData)
         public
         notExpired
     {

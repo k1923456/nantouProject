@@ -1,11 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
 
-import "./IDecreasable.sol";
+import "./TraceableObject.sol";
 
-contract Product is IDecreasable {
-    Quantity public quantity;
-
+contract Product is TraceableObject {
     struct ProductData {
         uint256 phid;
         uint256 organizationID;
@@ -19,16 +17,6 @@ contract Product is IDecreasable {
         string ownerName;
     }
     ProductData public productData;
-
-    struct UsedItemData {
-        uint256 shid;
-        uint256 phid;
-        address usedItem;
-        uint256 usedNumber;
-    }
-    UsedItemData[] public sourceList;
-    UsedItemData[] public destinationList;
-    mapping(address => bool) public destination;
 
     event ProductCreated(
         uint256 indexed phid,
@@ -66,16 +54,6 @@ contract Product is IDecreasable {
         _;
     }
 
-    modifier enoughQuantity(uint256 _number) {
-        require(_number <= quantity.restNumber, "Item: quantity is not enough");
-        _;
-    }
-
-    modifier requireDest(address _item) {
-        require(destination[_item] == true, "Item: Item is not in destination");
-        _;
-    }
-
     constructor(ProductData memory _productData, Quantity memory _quantity) {
         productData = _productData;
         quantity = _quantity;
@@ -109,33 +87,23 @@ contract Product is IDecreasable {
         );
     }
 
-    function decrease(uint256 _number)
+    function addSources(TraceData[] memory _sources)
         public
-        requireDest(msg.sender)
-        enoughQuantity(_number)
-    {
-        quantity.restNumber -= _number;
-    }
-
-    function addSources(UsedItemData[] memory _sources)
-        public
+        virtual
+        override
         onlyOrganization
         notExpired
     {
-        for (uint256 i = 0; i < _sources.length; i++) {
-            sourceList.push(_sources[i]);
-            IDecreasable(_sources[i].usedItem).decrease(_sources[i].usedNumber);
-        }
+        super.addSources(_sources);
     }
 
-    function addDests(UsedItemData[] memory _dests)
+    function addDests(TraceData[] memory _dests)
         public
+        virtual
+        override
         onlyOrganization
         notExpired
     {
-        for (uint256 i = 0; i < _dests.length; i++) {
-            destinationList.push(_dests[i]);
-            destination[_dests[i].usedItem] = true;
-        }
+        super.addDests(_dests);
     }
 }
