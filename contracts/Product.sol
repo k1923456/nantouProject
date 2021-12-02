@@ -80,10 +80,7 @@ contract Product is IDecreasable {
         _;
     }
 
-    constructor(
-        ProductData memory _productData,
-        Quantity memory _quantity
-    ) {
+    constructor(ProductData memory _productData, Quantity memory _quantity) {
         productData = _productData;
         quantity = _quantity;
 
@@ -100,10 +97,10 @@ contract Product is IDecreasable {
         );
     }
 
-    function modify(
-        ProductData memory _productData,
-        Quantity memory _quantity
-    ) public onlyOrganization {
+    function modify(ProductData memory _productData, Quantity memory _quantity)
+        public
+        onlyOrganization
+    {
         productData = _productData;
         quantity = _quantity;
 

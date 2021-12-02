@@ -30,11 +30,11 @@ contract("MSStaking", async (accounts) => {
         maxNumber: 1500,
         maxPackNumber: 5,
         unit: "ML",
-      }
+      };
       const item1 = await Item.new(item1Data, item1Quantity, {
         from: organization,
       });
-      console.log(`Item1 address is ${item1.address}`)
+      console.log(`Item1 address is ${item1.address}`);
 
       const item2Data = {
         shid: 1235,
@@ -50,11 +50,11 @@ contract("MSStaking", async (accounts) => {
         maxNumber: 900,
         maxPackNumber: 3,
         unit: "ML",
-      }
+      };
       const item2 = await Item.new(item2Data, item2Quantity, {
         from: organization,
       });
-      console.log(`Item2 address is ${item2.address}`)
+      console.log(`Item2 address is ${item2.address}`);
 
       const item1Dests = [
         {
@@ -65,7 +65,7 @@ contract("MSStaking", async (accounts) => {
         },
       ];
       await item1.addDests(item1Dests);
-      console.log(await item1.destination(item2.address))
+      console.log(await item1.destination(item2.address));
       const item2Sources = [
         {
           shid: 1234,
@@ -76,7 +76,7 @@ contract("MSStaking", async (accounts) => {
       ];
       await item2.addSources(item2Sources);
       const item1QuantityAfter = await item1.quantity();
-      expect(item1QuantityAfter.restNumber).to.bignumber.equal(new BN(1450))
+      expect(item1QuantityAfter.restNumber).to.bignumber.equal(new BN(1450));
     });
   });
 });

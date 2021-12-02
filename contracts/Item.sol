@@ -25,7 +25,7 @@ contract Item is IDecreasable {
         uint256 endTime;
     }
     address[] public procedureList;
-    mapping(address => ProcedureMetadata) private procedureMetadata;
+    mapping(address => ProcedureMetadata) private procedureData;
 
     struct UsedItemData {
         uint256 shid;
@@ -85,10 +85,7 @@ contract Item is IDecreasable {
         _;
     }
 
-    constructor(
-        ItemData memory _itemData,
-        Quantity memory _quantity
-    ) {
+    constructor(ItemData memory _itemData, Quantity memory _quantity) {
         itemData = _itemData;
         quantity = _quantity;
 
@@ -104,10 +101,10 @@ contract Item is IDecreasable {
         );
     }
 
-    function modify(
-        ItemData memory _itemData,
-        Quantity memory _quantity
-    ) public onlyOrganization {
+    function modify(ItemData memory _itemData, Quantity memory _quantity)
+        public
+        onlyOrganization
+    {
         itemData = _itemData;
         quantity = _quantity;
 
@@ -153,18 +150,11 @@ contract Item is IDecreasable {
         }
     }
 
-    function addProcedure(
-        uint256 _startTime,
-        uint256 _endTime,
-        string memory _name,
-        string[] memory _mediaList,
-        string[] memory _sensorList
-    ) public notExpired {
+    function addProcedure(procedureMetadata memory _procedureData)
+        public
+        notExpired
+    {
         procedureList.push(msg.sender);
-        procedureMetadata[msg.sender].startTime = _startTime;
-        procedureMetadata[msg.sender].endTime = _endTime;
-        procedureMetadata[msg.sender].name = _name;
-        procedureMetadata[msg.sender].mediaList = _mediaList;
-        procedureMetadata[msg.sender].sensorList = _sensorList;
+        procedureData[msg.sender] = _procedureData;
     }
 }
