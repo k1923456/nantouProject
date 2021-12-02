@@ -11,22 +11,26 @@ abstract contract TraceableObject {
     Quantity public quantity;
 
     struct TraceData {
-        uint256 shid;
-        uint256 phid;
+        uint256 id;
         address usedObject;
         uint256 usedNumber;
     }
     TraceData[] public sourceList;
     TraceData[] public destinationList;
-    mapping(address => bool) public destination;
+    mapping(address => bool) public isDestination;
 
     modifier enoughQuantity(uint256 _number) {
-        require(_number <= quantity.restNumber, "Item: quantity is not enough");
+        require(_number <= quantity.restNumber, "TraceableObject: quantity is not enough");
+        _;
+    }
+
+    modifier notExceedQuantity(uint256 _number) {
+        require(_number + quantity.restNumber <=quantity.producedNumber , "TraceableObject: quantity exceeds produced number");
         _;
     }
 
     modifier requireDest(address _item) {
-        require(destination[_item] == true, "Item: Item is not in destination");
+        require(isDestination[_item] == true, "TraceableObject: Item is not in destination");
         _;
     }
 
@@ -36,6 +40,14 @@ abstract contract TraceableObject {
         enoughQuantity(_number)
     {
         quantity.restNumber -= _number;
+    }
+
+    function increase(uint256 _number)
+        public
+        requireDest(msg.sender)
+        notExceedQuantity(_number)
+    {
+        quantity.restNumber += _number;
     }
 
     function addSources(TraceData[] memory _sources)
@@ -54,7 +66,7 @@ abstract contract TraceableObject {
     {
         for (uint256 i = 0; i < _dests.length; i++) {
             destinationList.push(_dests[i]);
-            destination[_dests[i].usedObject] = true;
+            isDestination[_dests[i].usedObject] = true;
         }
     }
 }

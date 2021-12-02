@@ -58,18 +58,16 @@ contract("MSStaking", async (accounts) => {
 
       const item1Dests = [
         {
-          shid: 1235,
-          phid: 0,
+          id: 1235,
           usedObject: item2.address,
           usedNumber: 50,
         },
       ];
       await item1.addDests(item1Dests);
-      console.log(await item1.destination(item2.address));
+      console.log(await item1.isDestination(item2.address));
       const item2Sources = [
         {
-          shid: 1234,
-          phid: 0,
+          id: 1234,
           usedObject: item1.address,
           usedNumber: 50,
         },
@@ -77,6 +75,10 @@ contract("MSStaking", async (accounts) => {
       await item2.addSources(item2Sources);
       const item1QuantityAfter = await item1.quantity();
       expect(item1QuantityAfter.restNumber).to.bignumber.equal(new BN(1450));
+
+      // console.log(await ethers.provider.getCode(item1.address))
+      await item1.destruct();
+      expect(await ethers.provider.getCode(item1.address)).to.equal("0x")
     });
   });
 });

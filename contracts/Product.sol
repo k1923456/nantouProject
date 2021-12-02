@@ -10,7 +10,7 @@ contract Product is TraceableObject {
         uint256 ownerID;
         uint256 transactionDate;
         uint256 expirationDate;
-        address organization;
+        address payable organization;
         address owner;
         string name;
         string organizationName;
@@ -19,16 +19,6 @@ contract Product is TraceableObject {
     ProductData public productData;
 
     event ProductCreated(
-        uint256 indexed phid,
-        uint256 producedNumber,
-        uint256 packNumber,
-        uint256 transactionDate,
-        uint256 expirationDate,
-        address organization,
-        address owner
-    );
-
-    event ProductModified(
         uint256 indexed phid,
         uint256 producedNumber,
         uint256 packNumber,
@@ -69,23 +59,10 @@ contract Product is TraceableObject {
         );
     }
 
-    function modify(ProductData memory _productData, Quantity memory _quantity)
-        public
-        onlyOrganization
-    {
-        productData = _productData;
-        quantity = _quantity;
-
-        emit ProductCreated(
-            _productData.phid,
-            _quantity.producedNumber,
-            _quantity.packNumber,
-            _productData.transactionDate,
-            _productData.expirationDate,
-            _productData.organization,
-            _productData.owner
-        );
+    function destruct() public onlyOrganization {
+        selfdestruct(productData.organization);
     }
+
 
     function addSources(TraceData[] memory _sources)
         public

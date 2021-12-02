@@ -9,33 +9,23 @@ contract Item is TraceableObject {
         uint256 organizationID;
         uint256 producedDate;
         uint256 expirationDate;
-        address organization;
+        address payable organization;
         string name;
         string organizationName;
     }
     ItemData public itemData;
 
     struct ProcedureData {
+        address procedure;
         string name;
         string[] mediaList;
         string[] sensorList;
         uint256 startTime;
         uint256 endTime;
     }
-    address[] public procedureList;
-    mapping(address => ProcedureData) private procedureData;
+    ProcedureData[] public procedureList;
 
     event ItemCreated(
-        uint256 indexed shid,
-        uint256 producedNumber,
-        uint256 restNumber,
-        uint256 packNumber,
-        uint256 producedDate,
-        uint256 expirationDate,
-        address organization
-    );
-
-    event ItemModified(
         uint256 indexed shid,
         uint256 producedNumber,
         uint256 restNumber,
@@ -50,6 +40,11 @@ contract Item is TraceableObject {
             msg.sender == itemData.organization,
             "Item: Caller is not a valid organization"
         );
+        _;
+    }
+
+    modifier onlyProcedure(address _procedure) {
+        require(msg.sender == _procedure, "Item: ProcedureData can only be added by prodecure");
         _;
     }
 
@@ -76,22 +71,8 @@ contract Item is TraceableObject {
         );
     }
 
-    function modify(ItemData memory _itemData, Quantity memory _quantity)
-        public
-        onlyOrganization
-    {
-        itemData = _itemData;
-        quantity = _quantity;
-
-        emit ItemModified(
-            _itemData.shid,
-            _quantity.producedNumber,
-            _quantity.restNumber,
-            _quantity.packNumber,
-            _itemData.producedDate,
-            _itemData.expirationDate,
-            _itemData.organization
-        );
+    function destruct() public onlyOrganization {
+        selfdestruct(itemData.organization);
     }
 
     function addSources(TraceData[] memory _sources)
@@ -116,9 +97,9 @@ contract Item is TraceableObject {
 
     function addProcedure(ProcedureData memory _procedureData)
         public
+        onlyProcedure(_procedureData.procedure)
         notExpired
     {
-        procedureList.push(msg.sender);
-        procedureData[msg.sender] = _procedureData;
+        procedureList.push(_procedureData);
     }
 }
