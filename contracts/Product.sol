@@ -59,11 +59,6 @@ contract Product is TraceableObject {
         );
     }
 
-    function destruct() public onlyOrganization {
-        selfdestruct(productData.organization);
-    }
-
-
     function addSources(TraceData[] memory _sources)
         public
         virtual
@@ -74,6 +69,15 @@ contract Product is TraceableObject {
         super.addSources(_sources);
     }
 
+    function delSource(address _object)
+        public
+        virtual
+        override
+        onlyOrganization
+    {
+        super.delSource(_object);
+    }
+
     function addDests(TraceData[] memory _dests)
         public
         virtual
@@ -82,5 +86,18 @@ contract Product is TraceableObject {
         notExpired
     {
         super.addDests(_dests);
+    }
+
+    function delDest(address _object) public virtual override onlyOrganization {
+        super.delDest(_object);
+    }
+
+    function destruct(address payable to)
+        public
+        virtual
+        override
+        onlyOrganization
+    {
+        super.destruct(to);
     }
 }

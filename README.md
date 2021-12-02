@@ -1,6 +1,15 @@
 # 重要合約邏輯
-1. 若要成功把自己的sourceList加入，必須先把自己加入其他 Item 的 destination, 其它Item才能被扣除數量
-2. addSource 時才去減少 source 數量, addDest 只是 allow 其它 Item 可以來減數量
+1. Create Item 流程:
+  1. deploy item/product contract
+  2. call item.sourceList 內所有元素的 addDests()
+  3. call item 的 addSources()
+2. Modify item 流程:
+  1. call item.sourceList 中所有元素的 delDest(itemAddress)
+  2. call item.destinationList 中所有元素的 delSource(itemAddress)
+  3. call item 的 destruct(organization)
+  4. 重新 Create Item
+
+Create/Modify Product 流程完全一樣
 
 # Advanced Sample Hardhat Project
 

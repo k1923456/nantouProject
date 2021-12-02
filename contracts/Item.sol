@@ -44,7 +44,10 @@ contract Item is TraceableObject {
     }
 
     modifier onlyProcedure(address _procedure) {
-        require(msg.sender == _procedure, "Item: ProcedureData can only be added by prodecure");
+        require(
+            msg.sender == _procedure,
+            "Item: ProcedureData can only be added by prodecure"
+        );
         _;
     }
 
@@ -71,10 +74,6 @@ contract Item is TraceableObject {
         );
     }
 
-    function destruct() public onlyOrganization {
-        selfdestruct(itemData.organization);
-    }
-
     function addSources(TraceData[] memory _sources)
         public
         virtual
@@ -85,6 +84,15 @@ contract Item is TraceableObject {
         super.addSources(_sources);
     }
 
+    function delSource(address _object)
+        public
+        virtual
+        override
+        onlyOrganization
+    {
+        super.delSource(_object);
+    }
+
     function addDests(TraceData[] memory _dests)
         public
         virtual
@@ -93,6 +101,19 @@ contract Item is TraceableObject {
         notExpired
     {
         super.addDests(_dests);
+    }
+
+    function delDest(address _object) public virtual override onlyOrganization {
+        super.delDest(_object);
+    }
+
+    function destruct(address payable to)
+        public
+        virtual
+        override
+        onlyOrganization
+    {
+        super.destruct(to);
     }
 
     function addProcedure(ProcedureData memory _procedureData)

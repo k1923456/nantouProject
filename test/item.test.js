@@ -51,11 +51,12 @@ contract("MSStaking", async (accounts) => {
         packNumber: 3,
         unit: "ML",
       };
+
+      // Create item2 with source item1
       const item2 = await Item.new(item2Data, item2Quantity, {
         from: organization,
       });
       console.log(`Item2 address is ${item2.address}`);
-
       const item1Dests = [
         {
           id: 1235,
@@ -76,9 +77,15 @@ contract("MSStaking", async (accounts) => {
       const item1QuantityAfter = await item1.quantity();
       expect(item1QuantityAfter.restNumber).to.bignumber.equal(new BN(1450));
 
-      // console.log(await ethers.provider.getCode(item1.address))
-      await item1.destruct();
-      expect(await ethers.provider.getCode(item1.address)).to.equal("0x")
+      // delete Item2
+      await item1.delDest(item2.address);
+      const item1destinationList = await item1.getDestinationList();
+      console.log(item1destinationList);
+      expect(item1destinationList[0].isDeleted).to.equal(true);
+      await item2.destruct(organization);
+      expect(await ethers.provider.getCode(item2.address)).to.equal("0x");
+      const item1QuantityAfter2 = await item1.quantity();
+      expect(item1QuantityAfter2.restNumber).to.bignumber.equal(new BN(1500));
     });
   });
 });
