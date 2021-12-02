@@ -32,9 +32,7 @@ contract Product is IDecreasable {
 
     event ProductCreated(
         uint256 indexed phid,
-        uint256 organizationID,
-        uint256 ownerID,
-        uint256 number,
+        uint256 producedNumber,
         uint256 packNumber,
         uint256 transactionDate,
         uint256 expirationDate,
@@ -44,9 +42,7 @@ contract Product is IDecreasable {
 
     event ProductModified(
         uint256 indexed phid,
-        uint256 organizationID,
-        uint256 ownerID,
-        uint256 number,
+        uint256 producedNumber,
         uint256 packNumber,
         uint256 transactionDate,
         uint256 expirationDate,
@@ -86,10 +82,8 @@ contract Product is IDecreasable {
 
         emit ProductCreated(
             _productData.phid,
-            _productData.organizationID,
-            _productData.ownerID,
-            _quantity.maxNumber,
-            _quantity.maxPackNumber,
+            _quantity.producedNumber,
+            _quantity.packNumber,
             _productData.transactionDate,
             _productData.expirationDate,
             _productData.organization,
@@ -106,10 +100,8 @@ contract Product is IDecreasable {
 
         emit ProductCreated(
             _productData.phid,
-            _productData.organizationID,
-            _productData.ownerID,
-            _quantity.maxNumber,
-            _quantity.maxPackNumber,
+            _quantity.producedNumber,
+            _quantity.packNumber,
             _productData.transactionDate,
             _productData.expirationDate,
             _productData.organization,

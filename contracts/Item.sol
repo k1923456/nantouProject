@@ -39,10 +39,9 @@ contract Item is IDecreasable {
 
     event ItemCreated(
         uint256 indexed shid,
-        uint256 organizationID,
+        uint256 producedNumber,
         uint256 restNumber,
-        uint256 maxNumber,
-        uint256 maxPackNumber,
+        uint256 packNumber,
         uint256 producedDate,
         uint256 expirationDate,
         address organization
@@ -50,10 +49,9 @@ contract Item is IDecreasable {
 
     event ItemModified(
         uint256 indexed shid,
-        uint256 organizationID,
+        uint256 producedNumber,
         uint256 restNumber,
-        uint256 maxNumber,
-        uint256 maxPackNumber,
+        uint256 packNumber,
         uint256 producedDate,
         uint256 expirationDate,
         address organization
@@ -91,10 +89,9 @@ contract Item is IDecreasable {
 
         emit ItemCreated(
             _itemData.shid,
-            _itemData.organizationID,
+            _quantity.producedNumber,
             _quantity.restNumber,
-            _quantity.maxNumber,
-            _quantity.maxPackNumber,
+            _quantity.packNumber,
             _itemData.producedDate,
             _itemData.expirationDate,
             _itemData.organization
@@ -110,10 +107,9 @@ contract Item is IDecreasable {
 
         emit ItemModified(
             _itemData.shid,
-            _itemData.organizationID,
+            _quantity.producedNumber,
             _quantity.restNumber,
-            _quantity.maxNumber,
-            _quantity.maxPackNumber,
+            _quantity.packNumber,
             _itemData.producedDate,
             _itemData.expirationDate,
             _itemData.organization

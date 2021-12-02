@@ -3,9 +3,9 @@ pragma solidity 0.8.9;
 
 interface IDecreasable {
     struct Quantity {
+        uint256 producedNumber;
         uint256 restNumber;
-        uint256 maxNumber;
-        uint256 maxPackNumber;
+        uint256 packNumber;
         string unit;
     }
 

@@ -26,9 +26,9 @@ contract("MSStaking", async (accounts) => {
         organizationName: "8D Tea",
       };
       const item1Quantity = {
+        producedNumber: 1500,
         restNumber: 1500,
-        maxNumber: 1500,
-        maxPackNumber: 5,
+        packNumber: 5,
         unit: "ML",
       };
       const item1 = await Item.new(item1Data, item1Quantity, {
@@ -46,9 +46,9 @@ contract("MSStaking", async (accounts) => {
         organizationName: "8D Tea22",
       };
       const item2Quantity = {
+        producedNumber: 900,
         restNumber: 900,
-        maxNumber: 900,
-        maxPackNumber: 3,
+        packNumber: 3,
         unit: "ML",
       };
       const item2 = await Item.new(item2Data, item2Quantity, {
