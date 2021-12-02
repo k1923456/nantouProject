@@ -60,7 +60,7 @@ contract("MSStaking", async (accounts) => {
         {
           shid: 1235,
           phid: 0,
-          usedItem: item2.address,
+          usedObject: item2.address,
           usedNumber: 50,
         },
       ];
@@ -70,7 +70,7 @@ contract("MSStaking", async (accounts) => {
         {
           shid: 1234,
           phid: 0,
-          usedItem: item1.address,
+          usedObject: item1.address,
           usedNumber: 50,
         },
       ];

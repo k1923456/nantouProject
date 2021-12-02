@@ -13,7 +13,7 @@ abstract contract TraceableObject {
     struct TraceData {
         uint256 shid;
         uint256 phid;
-        address usedItem;
+        address usedObject;
         uint256 usedNumber;
     }
     TraceData[] public sourceList;
@@ -44,7 +44,7 @@ abstract contract TraceableObject {
     {
         for (uint256 i = 0; i < _sources.length; i++) {
             sourceList.push(_sources[i]);
-            TraceableObject(_sources[i].usedItem).decrease(_sources[i].usedNumber);
+            TraceableObject(_sources[i].usedObject).decrease(_sources[i].usedNumber);
         }
     }
 
@@ -54,7 +54,7 @@ abstract contract TraceableObject {
     {
         for (uint256 i = 0; i < _dests.length; i++) {
             destinationList.push(_dests[i]);
-            destination[_dests[i].usedItem] = true;
+            destination[_dests[i].usedObject] = true;
         }
     }
 }
