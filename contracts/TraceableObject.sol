@@ -99,6 +99,15 @@ abstract contract TraceableObject {
         }
     }
 
+    function markDestDeleted(address _object) public virtual {
+        for (uint256 i = 0; i < destinationList.length; i++) {
+            if (destinationList[i].usedObject == _object) {
+                destinationList[i].isDeleted = true;
+                break;
+            }
+        }
+    }
+
     function destruct(address payable to) public virtual {
         selfdestruct(to);
     }
