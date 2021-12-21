@@ -19,7 +19,7 @@ contract Item is TraceableObject {
         address procedure;
         string name;
         string[] mediaList;
-        string[] sensorList;
+        string[] sensorDataURLs;
         uint256 startTime;
         uint256 endTime;
     }
