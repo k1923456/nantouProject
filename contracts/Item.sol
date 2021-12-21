@@ -127,4 +127,8 @@ contract Item is TraceableObject {
     {
         procedureList.push(_procedureData);
     }
+
+    function getProcedureList() public view returns (ProcedureData[] memory) {
+        return procedureList;
+    }
 }
