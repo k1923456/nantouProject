@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.9;
+import "hardhat/console.sol";
 
 abstract contract TraceableObject {
     struct Quantity {
@@ -11,10 +12,12 @@ abstract contract TraceableObject {
     Quantity public quantity;
 
     struct TraceData {
-        uint256 id;
+        uint256 shid;
+        uint256 phid;
         address usedObject;
         uint256 usedNumber;
         bool isDeleted;
+        string name;
     }
     TraceData[] public sourceList;
     TraceData[] public destinationList;
@@ -83,8 +86,11 @@ abstract contract TraceableObject {
     }
 
     function addDests(TraceData[] memory _dests) public virtual {
+        console.log("AAA");
         for (uint256 i = 0; i < _dests.length; i++) {
+            console.log("BBB");
             destinationList.push(_dests[i]);
+            console.log("BBB");
             isDestination[_dests[i].usedObject] = true;
         }
     }

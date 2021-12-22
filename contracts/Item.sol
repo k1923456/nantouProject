@@ -2,6 +2,7 @@
 pragma solidity 0.8.9;
 
 import "./TraceableObject.sol";
+import "hardhat/console.sol";
 
 contract Item is TraceableObject {
     struct ItemData {
@@ -100,6 +101,7 @@ contract Item is TraceableObject {
         onlyOrganization
         notExpired
     {
+        console.log("VVVV");
         super.addDests(_dests);
     }
 
