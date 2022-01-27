@@ -92,7 +92,12 @@ contract Product is TraceableObject {
         super.delDest(_object);
     }
 
-    function markDestDeleted(address _object) public virtual override onlyOrganization {
+    function markDestDeleted(address _object)
+        public
+        virtual
+        override
+        onlyOrganization
+    {
         super.markDestDeleted(_object);
     }
 

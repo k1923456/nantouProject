@@ -53,10 +53,12 @@ contract Item is TraceableObject {
     }
 
     modifier notExpired() {
-        require(
-            block.timestamp <= itemData.expirationDate,
-            "Item: This item has been expired"
-        );
+        if (itemData.expirationDate == 0) {
+            require(
+                block.timestamp <= itemData.expirationDate,
+                "Item: This item has been expired"
+            );
+        }
         _;
     }
 
@@ -109,7 +111,12 @@ contract Item is TraceableObject {
         super.delDest(_object);
     }
 
-    function markDestDeleted(address _object) public virtual override onlyOrganization {
+    function markDestDeleted(address _object)
+        public
+        virtual
+        override
+        onlyOrganization
+    {
         super.markDestDeleted(_object);
     }
 

@@ -11,21 +11,17 @@ const { ZERO_ADDRESS } = constants;
 const { expect } = require("chai");
 // const Item = artifacts.require("contracts/Item.sol:Item");
 let Item;
-const itemJSON = require('../artifacts/contracts/Item.sol/Item.json')
+const itemJSON = require("../artifacts/contracts/Item.sol/Item.json");
 
 contract("Item Contract", () => {
-
   beforeEach(async () => {
-    Item = await new ethers.ContractFactory(
-      itemJSON.abi,
-      itemJSON.bytecode,
-    );
+    Item = await new ethers.ContractFactory(itemJSON.abi, itemJSON.bytecode);
     // console.log(Item)
-  })
+  });
 
   describe("Item Test", function () {
     it("Test decrease", async function () {
-      let accounts = await ethers.getSigners();
+      const accounts = await ethers.getSigners();
       const [organization, procedure, owner] = accounts;
       // console.log(organization)
       // await organization.unlock()
@@ -44,7 +40,10 @@ contract("Item Contract", () => {
         packNumber: 5,
         unit: "ML",
       };
-      const item1 = await Item.connect(organization).deploy(item1Data, item1Quantity);
+      const item1 = await Item.connect(organization).deploy(
+        item1Data,
+        item1Quantity
+      );
       await item1.deployed();
       // console.log(`Item1 address is ${item1.address}`);
 
@@ -65,7 +64,10 @@ contract("Item Contract", () => {
       };
 
       // Create item2 with source item1
-      const item2 = await Item.connect(organization).deploy(item2Data, item2Quantity);
+      const item2 = await Item.connect(organization).deploy(
+        item2Data,
+        item2Quantity
+      );
       // console.log(`Item2 address is ${item2.address}`);
       const item1Dests = [
         {
@@ -74,12 +76,12 @@ contract("Item Contract", () => {
           usedObject: item2.address,
           usedNumber: 50,
           isDeleted: false,
-          name: "品相 2"
+          name: "品相 2",
         },
       ];
       // console.log(item1Dests)
       const tx1 = await item1.addDests(item1Dests);
-      await tx1.wait(1)
+      await tx1.wait(1);
       // console.log(tx1)
       // console.log(await item1.isDestination(item2.address));
       // console.log(await item1.getDestinationList());
@@ -90,15 +92,15 @@ contract("Item Contract", () => {
           usedObject: item1.address,
           usedNumber: 50,
           isDeleted: false,
-          name: "品相 1"
+          name: "品相 1",
         },
       ];
       const tx2 = await item2.addSources(item2Sources);
       // console.log(tx2)
-      await tx2.wait()
+      await tx2.wait();
       // console.log(await item2.getSourceList())
       const item1QuantityAfter = await item1.quantity();
-      expect(item1QuantityAfter.restNumber.toString()).to.equal('1450');
+      expect(item1QuantityAfter.restNumber.toString()).to.equal("1450");
 
       // delete Item2
       const tx3 = await item1.delDest(item2.address);
@@ -110,7 +112,7 @@ contract("Item Contract", () => {
       await tx4.wait(1);
       expect(await ethers.provider.getCode(item2.address)).to.equal("0x");
       const item1QuantityAfter2 = await item1.quantity();
-      expect(item1QuantityAfter2.restNumber.toString()).to.equal('1500');
+      expect(item1QuantityAfter2.restNumber.toString()).to.equal("1500");
     });
   });
 });

@@ -3,6 +3,8 @@ pragma solidity 0.8.9;
 import "hardhat/console.sol";
 
 abstract contract TraceableObject {
+    uint256 public constant DIVISOR = 10000;
+
     struct Quantity {
         uint256 producedNumber;
         uint256 restNumber;
@@ -45,6 +47,10 @@ abstract contract TraceableObject {
             "TraceableObject: Item is not in destination"
         );
         _;
+    }
+
+    function getDivisor() public pure returns (uint256) {
+        return DIVISOR;
     }
 
     function decrease(uint256 _number)
