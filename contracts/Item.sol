@@ -53,7 +53,7 @@ contract Item is TraceableObject {
     }
 
     modifier notExpired() {
-        if (itemData.expirationDate == 0) {
+        if (itemData.expirationDate != 0) {
             require(
                 block.timestamp <= itemData.expirationDate,
                 "Item: This item has been expired"
